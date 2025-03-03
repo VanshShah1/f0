@@ -1,41 +1,80 @@
 import flet as ft
 
+def generate(prompt):
+    # Add your AI generation logic here
+    print(f"Generating app for prompt: {prompt}")
+
 def main(page: ft.Page):
-    page.title = "Scrollable App Layout"
-    page.window_width = 800
-    page.window_height = 600
+    # Page settings
+    page.title = "AppGen AI"
+    page.bgcolor = "#000000"
+    page.scroll = "adaptive"
+    page.padding = 40
 
-    # Create scrollable column on the left
-    left_column = ft.ListView(
-        width=200,
-        spacing=10,
-        padding=20,
+    # UI Elements
+    header = ft.Column(
         controls=[
-            ft.ElevatedButton(f"Item {i}") 
-            for i in range(30)  # Creates 30 buttons to demonstrate scrolling
-        ]
-    )
-
-    # Create text editor on the right
-    text_editor = ft.TextField(
-        multiline=True,
-        expand=True,
-        min_lines=30,
-        value="Start typing...",
-        border=ft.InputBorder.NONE,
-        content_padding=20
-    )
-
-    # Create main layout
-    main_layout = ft.Row(
-        controls=[
-            left_column,
-            ft.VerticalDivider(width=1),
-            text_editor,
+            ft.Text(
+                "AppGen AI",
+                size=48,
+                weight="bold",
+                text_align="center",
+                color="#ffffff"
+            ),
+            ft.Text(
+                "Turn text prompts into cross-platform apps instantly",
+                size=24,
+                text_align="center",
+                color="#ffffff"
+            )
         ],
-        expand=True
+        spacing=20,
+        horizontal_alignment="center"
     )
 
-    page.add(main_layout)
+    prompt_field = ft.TextField(
+        multiline=True,
+        min_lines=5,
+        max_lines=5,
+        border_color="#ffffff",
+        color="#ffffff",
+        cursor_color="#ffffff",
+        text_align="center",
+        hint_text="Describe your app...",
+        hint_style=ft.TextStyle(color="#888888"),
+        on_submit=lambda e: generate(e.control.value)
+    )
+
+    generate_button = ft.ElevatedButton(
+        text="Generate App",
+        icon=ft.icons.AUTO_GRAPH,
+        on_click=lambda e: generate(prompt_field.value),
+        color="#000000",
+        bgcolor="#ffffff"
+    )
+
+    # Layout
+    page.add(
+        ft.Column(
+            [
+                header,
+                ft.Divider(height=40, color="transparent"),
+                ft.Container(
+                    prompt_field,
+                    alignment=ft.alignment.center,
+                    width=800
+                ),
+                ft.Divider(height=20, color="transparent"),
+                ft.Container(
+                    generate_button,
+                    alignment=ft.alignment.center
+                )
+            ],
+            spacing=0,
+            expand=True,
+            horizontal_alignment="center",
+            alignment="center"
+        )
+    )
 
 ft.app(target=main)
