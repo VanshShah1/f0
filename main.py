@@ -1,5 +1,6 @@
 import flet as ft
 from g4f.client import Client
+import re
 
 client = Client()
 
@@ -7,10 +8,11 @@ def generate(prompt):
     # Add your AI generation logic here
     response = client.chat.completions.create(
         model="deepseek-r1",
-        messages=[{"role": "user", "content": "Hello"}],
+        messages=[{"role": "user", "content": prompt}],
         web_search=False
     )
-    print(response.choices[0].message.content)
+    reason_removal=re.sub(r'<think>.*?</think>', '', response.choices[0].message.content, count=1, flags=re.DOTALL)
+    print(reason_removal)
 
 def main(page: ft.Page):
     # Page settings
