@@ -1,12 +1,20 @@
 import flet as ft
+from g4f.client import Client
+
+client = Client()
 
 def generate(prompt):
     # Add your AI generation logic here
-    print(f"Generating app for prompt: {prompt}")
+    response = client.chat.completions.create(
+        model="deepseek-r1",
+        messages=[{"role": "user", "content": "Hello"}],
+        web_search=False
+    )
+    print(response.choices[0].message.content)
 
 def main(page: ft.Page):
     # Page settings
-    page.title = "AppGen AI"
+    page.title = "f0"
     page.bgcolor = "#000000"
     page.scroll = "adaptive"
     page.padding = 40
@@ -15,7 +23,7 @@ def main(page: ft.Page):
     header = ft.Column(
         controls=[
             ft.Text(
-                "AppGen AI",
+                "f0",
                 size=48,
                 weight="bold",
                 text_align="center",
@@ -47,7 +55,8 @@ def main(page: ft.Page):
 
     generate_button = ft.ElevatedButton(
         text="Generate App",
-        icon=ft.icons.AUTO_GRAPH,
+        icon=ft.icons.AUTO_AWESOME_SHARP,
+        icon_color="black",
         on_click=lambda e: generate(prompt_field.value),
         color="#000000",
         bgcolor="#ffffff"
